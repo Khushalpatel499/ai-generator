@@ -1,0 +1,67 @@
+{
+  "job_id": "a1b2c3d4",
+  "story": "A little fox named Ruby lived in a magical forest...",
+  "style": "cartoon",
+  "scenes": [
+    {
+      "scene_index": 0,
+      "narration": "A little fox named Ruby lived in a magical forest. Every morning, she would wake up to the sound of singing birds and the smell of wildflowers.",
+      "image_prompt": "A cute little red fox waking up in a colorful magical forest, morning sunlight streaming through trees, wildflowers everywhere, butterflies, cartoon style, vibrant colors, clean lines, Disney-Pixar inspired, detailed background, cinematic lighting",
+      "emotion": "peaceful",
+      "motion": "pan_right",
+      "seed": 2847563921,
+      "duration": null,
+      "image_path": null,
+      "audio_path": null,
+      "video_clip_path": null
+    },
+    {
+      "scene_index": 1,
+      "narration": "One day, Ruby discovered a glowing crystal hidden beneath an ancient oak tree. It pulsed with a warm golden light that made her heart race with excitement.",
+      "image_prompt": "A red fox discovering a glowing golden crystal under a massive ancient oak tree, magical sparkles, forest clearing, warm golden light illuminating the scene, cartoon style, vibrant colors, clean lines, Disney-Pixar inspired, detailed background, cinematic lighting",
+      "emotion": "happy",
+      "motion": "zoom_in",
+      "seed": 1938475620,
+      "duration": null,
+      "image_path": null,
+      "audio_path": null,
+      "video_clip_path": null
+    },
+    {
+      "scene_index": 2,
+      "narration": "But a dark shadow fell over the forest. The evil raven Mordecai had sensed the crystal's power and was coming to steal it.",
+      "image_prompt": "A menacing dark raven with glowing red eyes flying over a darkened forest, ominous storm clouds, shadows creeping across the land, dramatic lighting, cartoon style, vibrant colors, clean lines, Disney-Pixar inspired, detailed background, cinematic lighting",
+      "emotion": "scared",
+      "motion": "pan_left",
+      "seed": 3948271650,
+      "duration": null,
+      "image_path": null,
+      "audio_path": null,
+      "video_clip_path": null
+    },
+    {
+      "scene_index": 3,
+      "narration": "Ruby gathered all her courage. She held the crystal high and its light burst forth, banishing the darkness and sending Mordecai fleeing into the night.",
+      "image_prompt": "A brave red fox standing tall on a hill, holding up a blazing golden crystal, powerful beams of light shooting outward, dark raven fleeing in the background, epic heroic moment, cartoon style, vibrant colors, clean lines, Disney-Pixar inspired, detailed background, cinematic lighting",
+      "emotion": "happy",
+      "motion": "zoom_in",
+      "seed": 5827364910,
+      "duration": null,
+      "image_path": null,
+      "audio_path": null,
+      "video_clip_path": null
+    },
+    {
+      "scene_index": 4,
+      "narration": "The forest was saved. From that day on, Ruby became known as the Guardian of the Crystal, and peace returned to the magical forest forever.",
+      "image_prompt": "A triumphant red fox wearing a small golden crown, surrounded by happy forest animals celebrating, the magical forest restored to its beauty, golden hour lighting, peaceful scene, cartoon style, vibrant colors, clean lines, Disney-Pixar inspired, detailed background, cinematic lighting",
+      "emotion": "peaceful",
+      "motion": "zoom_out",
+      "seed": 7291846350,
+      "duration": null,
+      "image_path": null,
+      "audio_path": null,
+      "video_clip_path": null
+    }
+  ]
+}

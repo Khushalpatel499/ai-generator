@@ -1,0 +1,38 @@
+# Byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Output
+output/
+*.mp4
+*.wav
+*.png
+*.srt
+
+# Models (too large for git)
+models/*.onnx
+models/*.bin
+models/*.safetensors
+models/lora/
+
+# Config secrets
+config/client_secrets.json
+config/youtube_token.json
+
+# Environment
+.env
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temp
+*.tmp
+temp/

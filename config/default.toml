@@ -1,0 +1,33 @@
+# Default configuration
+[general]
+style = "cartoon"
+scene_generator = "rule_based"  # rule_based | llm
+
+[image]
+model = "stabilityai/stable-diffusion-xl-base-1.0"
+steps = 20
+guidance_scale = 7.5
+width = 1024
+height = 576
+use_fp16 = true
+
+[tts]
+engine = "piper"  # piper | coqui | dummy
+piper_model = "en_US-lessac-medium"
+speed = 1.0
+
+[video]
+fps = 24
+width = 1920
+height = 1080
+transition_duration = 0.5
+format = "mp4"
+
+[llm]
+model = "mistral"
+api_url = "http://localhost:11434"
+
+[paths]
+output = "./output"
+temp = "./output/temp"
+models = "./models"

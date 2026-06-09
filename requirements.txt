@@ -1,0 +1,24 @@
+# Core dependencies (always needed)
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+Pillow==10.1.0
+requests==2.31.0
+
+# Video/Audio processing
+moviepy==1.0.3
+numpy==1.26.2
+
+# TTS (choose one)
+# piper-tts==1.2.0         # Lightweight, fast
+# TTS==0.22.0              # Coqui - more expressive
+
+# Image Generation (optional - needs GPU)
+# diffusers==0.25.0
+# transformers==4.36.0
+# accelerate==0.25.0
+# torch==2.1.0
+# safetensors==0.4.1
+
+# LLM Scene Generation (optional)
+# ollama==0.1.0
