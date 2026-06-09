@@ -30,7 +30,14 @@ class StableDiffusionGenerator(BaseImageGenerator):
         if self.config.enable_attention_slicing:
             self.pipe.enable_attention_slicing()
 
-        if device == "cpu":
+        if device == "cuda":
+            self.pipe = self.pipe.to(device)
+            # Try xformers for faster generation
+            try:
+                self.pipe.enable_xformers_memory_efficient_attention()
+            except Exception:
+                pass
+        elif device == "cpu":
             self.pipe.enable_sequential_cpu_offload()
         else:
             self.pipe = self.pipe.to(device)
@@ -55,10 +62,8 @@ class StableDiffusionGenerator(BaseImageGenerator):
         style_prefix = self.config.style_presets.get(style, "")
         full_prompt = f"{style_prefix}, {prompt}"
 
-        negative_prompt = (
-            "blurry, bad anatomy, bad hands, text, watermark, "
-            "low quality, deformed, disfigured, ugly, duplicate"
-        )
+        # Use improved negative prompt from config
+        negative_prompt = self.config.negative_prompt
 
         # Seed locking for character consistency
         generator = torch.Generator(device="cpu")
@@ -77,6 +82,7 @@ class StableDiffusionGenerator(BaseImageGenerator):
 
         # Save image
         output_path = self.config.temp_dir / f"scene_{scene_index:03d}.png"
+        output_path.parent.mkdir(parents=True, exist_ok=True)
         image.save(output_path)
         return str(output_path)
 
@@ -88,21 +94,18 @@ class DummyImageGenerator(BaseImageGenerator):
         self.config = config
 
     def generate(self, prompt: str, style: str, seed: Optional[int] = None, scene_index: int = 0) -> str:
-        from PIL import Image, ImageDraw, ImageFont
+        from PIL import Image, ImageDraw
         import random
 
         if seed:
             random.seed(seed)
 
-        # Create a colored placeholder image
         colors = [(255, 100, 100), (100, 255, 100), (100, 100, 255),
                   (255, 255, 100), (255, 100, 255), (100, 255, 255)]
         color = colors[scene_index % len(colors)]
 
         img = Image.new('RGB', (self.config.sd_width, self.config.sd_height), color)
         draw = ImageDraw.Draw(img)
-
-        # Add scene text
         text = f"Scene {scene_index + 1}\n{prompt[:80]}..."
         draw.text((50, 50), text, fill=(0, 0, 0))
 

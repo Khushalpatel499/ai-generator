@@ -9,8 +9,11 @@ from src.core.config import Config
 from src.pipeline.orchestrator import Pipeline, Job
 from src.modules.story.generator import StoryGenerator
 from src.modules.scene.generator import RuleBasedSceneGenerator, OllamaSceneGenerator
+from src.modules.scene.enhanced_generator import EnhancedSceneGenerator
+from src.modules.scene.pro_generator import ProSceneGenerator
 from src.modules.image.generator import DummyImageGenerator
 from src.modules.tts.engine import DummyTTSEngine
+from src.modules.tts.music import MusicMixer
 from src.modules.animation.animator import FFmpegAnimator
 from src.modules.video.composer import FFmpegComposer
 from src.modules.video.subtitles import SubtitleGenerator
@@ -25,14 +28,15 @@ def main():
                        choices=["cartoon", "motivation", "funny", "horror", "educational"],
                        help="Content type for story generation")
     parser.add_argument("--style", type=str, default="cartoon",
-                       choices=["cartoon", "anime", "pixar", "comic"])
+                       choices=["cartoon", "anime", "pixar", "comic", "realistic_cartoon"])
     parser.add_argument("--use-gpu", action="store_true")
     parser.add_argument("--use-llm", action="store_true", help="Use Ollama for scene splitting")
     parser.add_argument("--tts", type=str, default="dummy", choices=["piper", "coqui", "dummy"])
     parser.add_argument("--no-subtitles", action="store_true")
+    parser.add_argument("--no-music", action="store_true")
     args = parser.parse_args()
 
-    # Load story from file or direct text
+    # Load story
     story = ""
     if args.story:
         if Path(args.story).exists():
@@ -47,15 +51,20 @@ def main():
     config = Config()
     config.ensure_dirs()
 
-    # Build modules
-    scene_gen = OllamaSceneGenerator() if args.use_llm else RuleBasedSceneGenerator()
+    # Scene generator: pro (default) > llm > enhanced > rule_based
+    if args.use_llm:
+        scene_gen = OllamaSceneGenerator()
+    else:
+        scene_gen = ProSceneGenerator()
 
+    # Image generator
     if args.use_gpu:
         from src.modules.image.generator import StableDiffusionGenerator
         image_gen = StableDiffusionGenerator(config)
     else:
         image_gen = DummyImageGenerator(config)
 
+    # TTS
     if args.tts == "piper":
         from src.modules.tts.engine import PiperTTSEngine
         tts_engine = PiperTTSEngine(config)
@@ -65,17 +74,22 @@ def main():
     else:
         tts_engine = DummyTTSEngine(config)
 
+    # Optional modules
     story_gen = StoryGenerator() if args.idea else None
     subtitle_gen = None if args.no_subtitles else SubtitleGenerator()
+    music_mixer = None if args.no_music else MusicMixer()
 
     pipeline = Pipeline(
         scene_gen, image_gen, tts_engine,
         FFmpegAnimator(config), FFmpegComposer(config), LocalStorage(config),
-        story_gen=story_gen, subtitle_gen=subtitle_gen
+        story_gen=story_gen, subtitle_gen=subtitle_gen, music_mixer=music_mixer
     )
 
-    job = Job(story=story, idea=args.idea or "", style=args.style,
-              content_type=args.type, subtitles=not args.no_subtitles)
+    job = Job(
+        story=story, idea=args.idea or "", style=args.style,
+        content_type=args.type, subtitles=not args.no_subtitles,
+        background_music=not args.no_music
+    )
 
     print(f"[*] Starting video generation [Job: {job.id}]")
     print(f"    Content Type: {args.type} | Style: {args.style}")
